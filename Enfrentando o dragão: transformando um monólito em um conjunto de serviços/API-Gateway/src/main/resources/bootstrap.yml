@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: API-Gateway
+  cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
+      retry:
+        maxAttempts: 20
+
+eureka:
+  instance:
+    leaseRenewalIntervalInSeconds: 30
