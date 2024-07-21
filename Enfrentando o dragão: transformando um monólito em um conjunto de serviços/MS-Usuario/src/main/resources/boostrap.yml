@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: MS-Usuario
+  cloud:
+    config:
+      uri: http://localhost:8888
+      fail-fast: true
+      retry:
+        maxAttempts: 20
