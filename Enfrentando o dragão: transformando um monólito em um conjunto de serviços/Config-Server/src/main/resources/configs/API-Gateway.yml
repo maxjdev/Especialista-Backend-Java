@@ -5,18 +5,18 @@ spring:
   cloud:
     gateway:
       routes:
-        - id: usuario
-          uri: http://localhost:8891
+        - id: MS-Usuario
+          uri: lb://MS-USUARIO
           predicates:
             - Path=/usuario/**
-        - id: meme
-          uri: http://localhost:8892
-          predicates:
-            - Path=/meme/**
-        - id: categoria
-          uri: http://localhost:8893
+        - id: MS-Categoria
+          uri: lb://MS-CATEGORIA
           predicates:
             - Path=/categoria/**
+        - id: MS-Meme
+          uri: lb://MS-MEME
+          predicates:
+            - Path=/meme/**
       discovery:
         locator:
           enabled: true
@@ -30,24 +30,30 @@ spring:
         type: web
 
 eureka:
-  instance:
-    hostname: localhost
-    port: 8761
   client:
-    initialInstanceInfoReplicationIntervalSeconds: 30
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${eureka.instance.port}/eureka/
+      defaultZone: http://localhost:8761/eureka/
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-        exclude: loggers
+        base-path: /actuator
+    restart:
+      enabled: true
 
-logging.level:
-  org.springframework.retry: trace
-  org.springframework.cloud.gateway: trace
-  com.netflix.discovery: trace
+logging:
+  level:
+    root: INFO
+    org.springframework.web: DEBUG
+    org.springframework.cloud.gateway: DEBUG
+    org.springframework.cloud.gateway.filter: DEBUG
+    org.springframework.cloud.gateway.route: DEBUG
+    org.springframework.cloud.gateway.handler: DEBUG
+    com.netflix.discovery: WARN
+  pattern:
+    console:
+      logFormat: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"

@@ -20,23 +20,26 @@ spring:
         type: web
 
 eureka:
-  instance:
-    initialInstanceInfoReplicationIntervalSeconds: 30
-    leaseRenewalIntervalInSeconds: 30
-    hostname: localhost
-    port: 8761
   client:
     registerWithEureka: true
     fetchRegistry: true
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${eureka.instance.port}/eureka/
+      defaultZone: http://localhost:8761/eureka/
 
 management:
   endpoints:
     web:
       exposure:
         include: "*"
-        exclude: loggers
+        base-path: /actuator
+    restart:
+      enabled: true
 
-logging.level:
-  org.springframework.cloud.config.server: trace
+logging:
+  level:
+    root: INFO
+    org.springframework.cloud.config: DEBUG
+    org.springframework: WARN
+  pattern:
+    console:
+      logFormat: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"

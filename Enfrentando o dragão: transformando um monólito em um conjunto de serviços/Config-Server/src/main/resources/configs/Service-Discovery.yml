@@ -2,13 +2,11 @@ server:
   port: 8761
 
 eureka:
-  instance:
-    hostname: localhost
   client:
     registerWithEureka: false
     fetchRegistry: false
     serviceUrl:
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://localhost:8761/eureka/
   server:
     waitTimeInMsWhenSyncEmpty: 3000
 
@@ -26,8 +24,15 @@ management:
     web:
       exposure:
         include: "*"
-        exclude: loggers
+        base-path: /actuator
+    restart:
+      enabled: true
 
-logging.level:
-  org.springframework.retry: trace
-  com.netflix.discovery: trace
+logging:
+  level:
+    root: INFO
+    com.netflix.discovery: DEBUG
+    org.springframework.cloud.netflix.eureka: DEBUG
+  pattern:
+    console:
+      logFormat: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
